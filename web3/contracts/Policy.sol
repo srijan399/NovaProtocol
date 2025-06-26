@@ -48,12 +48,14 @@ enum RiskLevel {
     MEDIUM,
     HIGH
 }
+
 enum PolicyType {
     DEFI_PROTOCOL,
     BRIDGE_SECURITY,
     SMART_CONTRACT,
     WALLET_HACK
 }
+
 enum ClaimStatus {
     PENDING,
     APPROVED,
@@ -206,24 +208,24 @@ contract PolicyManager {
         emit PolicyExpired(policyId);
     }
 
-    function _calculateRiskLevel(
-        PolicyType _policyType,
-        uint256 _coverageAmount
-    ) private pure returns (RiskLevel) {
-        if (
-            _coverageAmount > 1000000 ether ||
-            _policyType == PolicyType.BRIDGE_SECURITY
-        ) {
-            return RiskLevel.HIGH;
-        } else if (
-            _coverageAmount > 100000 ether ||
-            _policyType == PolicyType.DEFI_PROTOCOL
-        ) {
-            return RiskLevel.MEDIUM;
-        } else {
-            return RiskLevel.LOW;
-        }
-    }
+    // function _calculateRiskLevel(
+    //     PolicyType _policyType,
+    //     uint256 _coverageAmount
+    // ) private pure returns (RiskLevel) {
+    //     if (
+    //         _coverageAmount > 1000000 ether ||
+    //         _policyType == PolicyType.BRIDGE_SECURITY
+    //     ) {
+    //         return RiskLevel.HIGH;
+    //     } else if (
+    //         _coverageAmount > 100000 ether ||
+    //         _policyType == PolicyType.DEFI_PROTOCOL
+    //     ) {
+    //         return RiskLevel.MEDIUM;
+    //     } else {
+    //         return RiskLevel.LOW;
+    //     }
+    // }
 }
 
 // ==================== 2. PREMIUM FORWARDER CONTRACT ====================
