@@ -4,97 +4,16 @@ import { useState } from "react";
 import { Search, Shield, Layers, Zap, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Navbar from "@/components/Navbar";
 
 export default function AegisLanding() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden">
       {/* Top Boundary Gradient */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-60"></div>
-      {/* Floating Navigation */}
-      <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-black/20 backdrop-blur-lg border border-gray-700/50 rounded-full px-6 py-3 shadow-2xl">
-        <div className="flex items-center space-x-8">
-          <div className="flex items-center space-x-2">
-            <Shield className="w-6 h-6 text-cyan-400" />
-            <span className="font-bold text-xl">Aegis</span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Home
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Features
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Docs
-            </a>
-            <Button
-              variant="outline"
-              className="bg-cyan-500/10 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/20"
-            >
-              Launch App
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/90 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-4">
-            <div className="flex flex-col space-y-3">
-              <a
-                href="#"
-                className="text-gray-300 hover:text-white transition-colors py-2"
-              >
-                Home
-              </a>
-              <a
-                href="#"
-                className="text-gray-300 hover:text-white transition-colors py-2"
-              >
-                Features
-              </a>
-              <a
-                href="#"
-                className="text-gray-300 hover:text-white transition-colors py-2"
-              >
-                Docs
-              </a>
-              <Button
-                variant="outline"
-                className="bg-cyan-500/10 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/20 mt-2"
-              >
-                Launch App
-              </Button>
-            </div>
-          </div>
-        )}
-      </nav>
-
+      <Navbar />
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
