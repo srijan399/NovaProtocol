@@ -2,6 +2,7 @@ import { Menu, Shield, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { ConnectKitButton } from "connectkit";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,12 +38,13 @@ const Navbar = () => {
             >
               Docs
             </Link>
-            <Button
+            <ConnectKitButton />
+            {/* <Button
               variant="outline"
               className="bg-cyan-500/10 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/20"
             >
               Launch App
-            </Button>
+            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,12 +82,12 @@ const Navbar = () => {
               >
                 Docs
               </a>
-              <Button
+              {/* <Button
                 variant="outline"
                 className="bg-cyan-500/10 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/20 mt-2"
               >
                 Launch App
-              </Button>
+              </Button> */}
             </div>
           </div>
         )}
