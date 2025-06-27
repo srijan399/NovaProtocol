@@ -6,7 +6,6 @@ import { WagmiProvider } from "wagmi";
 import { config } from './wagmi';
 import { theme } from '@/constants/theme';
 import { useState } from 'react';
-import "dotenv/config";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     // Create QueryClient with useState to prevent re-initialization
