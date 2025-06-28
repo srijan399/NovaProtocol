@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Shield, Layers, Zap, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,28 @@ import Navbar from "@/components/Navbar";
 
 export default function AegisLanding() {
   const [inputValue, setInputValue] = useState("");
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+
+  const placeholderTexts = [
+    "I want insurance for my DeFi protocol...",
+    "I want insurance for my meme coins...",
+    "I want insurance for my NFT collection...",
+    "I want insurance for my smart contracts...",
+    "I want insurance for my yield farming...",
+    "I want insurance for my bridge transactions...",
+    "I want insurance for my wallet...",
+    "I want insurance for my staking rewards...",
+    "I want insurance for my liquidity pools...",
+    "I want insurance for my DAO treasury..."
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPlaceholder((prev) => (prev + 1) % placeholderTexts.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [placeholderTexts.length]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden">
@@ -44,10 +66,10 @@ export default function AegisLanding() {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="What do you want to insure today?"
+                  placeholder={placeholderTexts[currentPlaceholder]}
                   value={inputValue}
                   onChange={(e: any) => setInputValue(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-800/50 border-gray-600/50 rounded-xl text-white placeholder-gray-400 text-lg focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-800/50 border-gray-600/50 rounded-xl text-white placeholder-gray-400 text-lg focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all placeholder:transition-all placeholder:duration-500"
                 />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 opacity-0 hover:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
