@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -28,6 +28,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
     // State variables
     address public user;
     address public mainContract;
+    address public yieldContract; // Address of the yield contract for potential future use
     uint256 public subscriptionRate; // Amount per payment period
     uint256 public lastPaymentTime;
     uint256 public totalFunded;
@@ -67,6 +68,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
     constructor(
         address _user,
         address _mainContract,
+        address _yieldContract,
         uint256 _subscriptionRate
     ) {
         require(_user != address(0), "Invalid user address");
@@ -78,6 +80,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
 
         user = _user;
         mainContract = _mainContract;
+        yieldContract = _yieldContract;
         subscriptionRate = _subscriptionRate;
         lastPaymentTime = block.timestamp;
     }
@@ -85,7 +88,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
     /**
      * @dev Fund the agent contract
      */
-    function fund() external payable nonReentrant whenNotPaused {
+    function fund() external payable onlyUser {
         require(msg.value > 0, "Funding amount must be greater than 0");
 
         totalFunded += msg.value;
@@ -149,7 +152,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
         totalSubscriptionPaid += subscriptionRate;
         lastPaymentTime = block.timestamp;
 
-        (bool success, ) = payable(mainContract).call{value: subscriptionRate}(
+        (bool success, ) = payable(yieldContract).call{value: subscriptionRate}(
             ""
         );
         require(success, "Subscription payment failed");

@@ -63,6 +63,25 @@ interface IYieldPool {
     function getPoolBalance(uint8 riskLevel) external view returns (uint256);
 }
 
+// Interface for AI Agent Contract
+interface IAIAgentContract {
+    function paySubscription() external;
+
+    function canPaySubscription() external view returns (bool);
+
+    function isPaymentDue(uint256 paymentInterval) external view returns (bool);
+
+    function getBalance() external view returns (uint256);
+
+    function user() external view returns (address);
+
+    function subscriptionRate() external view returns (uint256);
+
+    function updateSubscriptionRate(uint256 _newRate) external;
+
+    function fund() external payable;
+}
+
 contract PremiumForwarder is AutomationCompatibleInterface {
     IPolicyManager public policyManager;
     IYieldPool public yieldPool;
@@ -79,10 +98,99 @@ contract PremiumForwarder is AutomationCompatibleInterface {
     );
     event AutoPayEnabled(uint256 indexed policyId);
     event AutoPayDisabled(uint256 indexed policyId);
+    event AgentRegistered(address indexed agentContract, address indexed user);
+    event AgentRemoved(address indexed agentContract, address indexed user);
+    event SubscriptionCollected(
+        address indexed agentContract,
+        uint256 amount,
+        uint256 timestamp
+    );
+    event AgentFunded(
+        address indexed agentContract,
+        address indexed funder,
+        uint256 amount,
+        uint256 timestamp
+    );
+    event PaymentIntervalUpdated(uint256 oldInterval, uint256 newInterval);
+    event AutomationExecuted(uint256 agentsProcessed, uint256 totalCollected);
+    event FundsWithdrawn(address indexed owner, uint256 amount);
+
+    // State variables
+    address[] public agentContracts;
+    mapping(address => bool) public isRegisteredAgent;
+    mapping(address => uint256) public agentIndex;
+
+    uint256 public totalCollected;
+    uint256 public lastAutomationRun;
+
+    bool public automationEnabled = true;
 
     constructor(address _policyManager, address _yieldPool) {
         policyManager = IPolicyManager(_policyManager);
         yieldPool = IYieldPool(_yieldPool);
+    }
+
+    /**
+     * @dev Register a new AI agent contract
+     * @param agentContract Address of the agent contract to register
+     */
+    function registerAgent(address agentContract) external {
+        require(agentContract != address(0), "Invalid agent contract address");
+        require(!isRegisteredAgent[agentContract], "Agent already registered");
+
+        // Verify it's a valid agent contract by checking if it has required functions
+        try IAIAgentContract(agentContract).user() returns (address agentUser) {
+            require(agentUser != address(0), "Invalid agent contract");
+        } catch {
+            revert("Invalid agent contract interface");
+        }
+
+        agentContracts.push(agentContract);
+        isRegisteredAgent[agentContract] = true;
+        agentIndex[agentContract] = agentContracts.length - 1;
+
+        address user = IAIAgentContract(agentContract).user();
+        emit AgentRegistered(agentContract, user);
+    }
+
+    /**
+     * @dev Remove an AI agent contract
+     * @param agentContract Address of the agent contract to remove
+     */
+    function removeAgent(address agentContract) external {
+        require(isRegisteredAgent[agentContract], "Agent not registered");
+
+        uint256 index = agentIndex[agentContract];
+        uint256 lastIndex = agentContracts.length - 1;
+
+        // Move last element to the index of element to remove
+        if (index != lastIndex) {
+            address lastAgent = agentContracts[lastIndex];
+            agentContracts[index] = lastAgent;
+            agentIndex[lastAgent] = index;
+        }
+
+        // Remove last element and update mappings
+        agentContracts.pop();
+        delete isRegisteredAgent[agentContract];
+        delete agentIndex[agentContract];
+
+        address user = IAIAgentContract(agentContract).user();
+        emit AgentRemoved(agentContract, user);
+    }
+
+    /**
+     * @dev Fund an AI agent contract
+     * @param agentContract Address of the agent contract to fund
+     */
+    function fundAgent(address agentContract) external payable {
+        require(isRegisteredAgent[agentContract], "Agent not registered");
+        require(msg.value > 0, "Funding amount must be greater than 0");
+
+        // Call the fund function on the agent contract, forwarding the AVAX
+        IAIAgentContract(agentContract).fund{value: msg.value}();
+
+        emit AgentFunded(agentContract, msg.sender, msg.value, block.timestamp);
     }
 
     function enableAutoPay(uint256 policyId) external {
@@ -150,6 +258,27 @@ contract PremiumForwarder is AutomationCompatibleInterface {
         }
     }
 
+    // TODO: Fix autopay logic
+    function _processPremiumPayment(uint256 policyId) private {
+        (
+            address owner,
+            ,
+            uint256 premiumAmount,
+            uint8 riskLevel,
+            ,
+            bool isActive
+        ) = policyManager.getPolicyDetails(policyId);
+
+        if (!isActive) return;
+
+        yieldPool.depositPremium{value: premiumAmount}(
+            premiumAmount,
+            riskLevel
+        );
+        lastPremiumPayment[policyId] = block.timestamp;
+        emit PremiumPaid(policyId, premiumAmount, riskLevel);
+    }
+
     function manualPremiumPayment(uint256 policyId) external payable {
         (
             address owner,
@@ -175,27 +304,6 @@ contract PremiumForwarder is AutomationCompatibleInterface {
             payable(msg.sender).transfer(msg.value - premiumAmount);
         }
 
-        emit PremiumPaid(policyId, premiumAmount, riskLevel);
-    }
-
-    // TODO: Fix autopay logic
-    function _processPremiumPayment(uint256 policyId) private {
-        (
-            address owner,
-            ,
-            uint256 premiumAmount,
-            uint8 riskLevel,
-            ,
-            bool isActive
-        ) = policyManager.getPolicyDetails(policyId);
-
-        if (!isActive) return;
-
-        yieldPool.depositPremium{value: premiumAmount}(
-            premiumAmount,
-            riskLevel
-        );
-        lastPremiumPayment[policyId] = block.timestamp;
         emit PremiumPaid(policyId, premiumAmount, riskLevel);
     }
 
