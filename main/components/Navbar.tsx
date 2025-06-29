@@ -10,11 +10,13 @@ const Navbar = () => {
     <>
       {/* Floating Navigation */}
       <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-black/20 backdrop-blur-lg border border-gray-700/50 rounded-full px-6 py-3 shadow-2xl">
-        <div className="flex items-center space-x-8">
+        <div className="flex items-center space-x-10 pl-4">
           <Link href="/" className="flex items-center space-x-2">
             <div className="flex items-center space-x-2">
               <Shield className="w-6 h-6 text-cyan-400" />
-              <span className="font-bold text-xl">Aegis</span>
+              <span className="font-bold text-xl text-white text-center items-center">
+                Nova Protocol
+              </span>
             </div>
           </Link>
 
@@ -27,16 +29,16 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              href="/"
+              href="/getPolicy"
               className="text-gray-300 hover:text-white transition-colors"
             >
-              Features
+              Policies
             </Link>
             <Link
-              href="/"
+              href="/userDashboard"
               className="text-gray-300 hover:text-white transition-colors"
             >
-              Docs
+              Dashboard
             </Link>
             <ConnectKitButton />
             {/* <Button

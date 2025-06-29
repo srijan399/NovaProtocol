@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 
-export default function AegisLanding() {
+export default function Landing() {
   const [inputValue, setInputValue] = useState("");
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
@@ -20,7 +20,7 @@ export default function AegisLanding() {
     "I want insurance for my wallet...",
     "I want insurance for my staking rewards...",
     "I want insurance for my liquidity pools...",
-    "I want insurance for my DAO treasury..."
+    "I want insurance for my DAO treasury...",
   ];
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export default function AegisLanding() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Aegis is a modular, AI-powered protocol securing DeFi, bridges,
-            wallets, and smart contracts across chains.
+            Nova Protocol is a modular, AI-powered protocol securing DeFi,
+            bridges, wallets, and smart contracts across chains.
           </p>
 
           {/* Central Input with Glow Effect */}
@@ -173,7 +173,7 @@ export default function AegisLanding() {
               <div className="md:col-span-1">
                 <div className="flex items-center space-x-2 mb-4">
                   <Shield className="w-8 h-8 text-cyan-400" />
-                  <span className="font-bold text-2xl">Aegis</span>
+                  <span className="font-bold text-2xl">Nova Protocol</span>
                 </div>
                 <p className="text-gray-400 mb-6 leading-relaxed">
                   The future of decentralized insurance. Protecting your digital
@@ -374,7 +374,7 @@ export default function AegisLanding() {
             {/* Bottom Footer */}
             <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-700/50">
               <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-gray-400 text-sm">
-                <p>&copy; 2024 Aegis Protocol. All rights reserved.</p>
+                <p>&copy; 2024 Nova Protocol Protocol. All rights reserved.</p>
                 <div className="flex space-x-6">
                   <a href="#" className="hover:text-white transition-colors">
                     Privacy Policy
