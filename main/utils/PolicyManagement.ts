@@ -6,7 +6,7 @@ interface createData {
   policyType: number;
   _coverageAmount: number;
   _premiumAmount: number;
-  _duration: Date;
+  _duration: string | Date;
   uri: string;
   _riskLevel: number;
 }
@@ -17,36 +17,48 @@ const usePolicyManagement = () => {
 
   const createPolicy = async (createData: createData) => {
     console.log("Creating policy with data:", createData);
-    const {
-      policyType,
-      _coverageAmount,
-      _premiumAmount,
-      _duration,
-      uri,
-      _riskLevel,
-    } = createData;
-
-    // Calculate the duration in seconds from current date to the provided date
-    const currentDate = new Date();
-    const durationInSeconds = Math.floor(
-      (_duration.getTime() - currentDate.getTime()) / 1000
-    );
-
-    const data = await writeContractAsync({
-      abi: policyManagerAbi,
-      address: policyManagerAddress,
-      functionName: "createPolicy",
-      args: [
+    try {
+      const {
         policyType,
-        parseEther(_coverageAmount.toString()),
-        parseEther(_premiumAmount.toString()),
-        durationInSeconds,
+        _coverageAmount,
+        _premiumAmount,
+        _duration,
         uri,
         _riskLevel,
-      ],
-    });
+      } = createData;
 
-    return data;
+      // Calculate the duration in seconds from current date to the provided date
+      const currentDate = new Date();
+      const durationDate = new Date(_duration);
+      const durationInSeconds = Math.floor(
+        (durationDate.getTime() - currentDate.getTime()) / 1000
+      );
+
+      // Ensure duration is positive
+      if (durationInSeconds <= 0) {
+        throw new Error("Duration must be in the future");
+      }
+
+      const data = await writeContractAsync({
+        abi: policyManagerAbi,
+        address: policyManagerAddress,
+        functionName: "createPolicy",
+        args: [
+          policyType,
+          parseEther(_coverageAmount.toString()),
+          parseEther(_premiumAmount.toString()),
+          durationInSeconds,
+          uri,
+          _riskLevel,
+        ],
+      });
+
+      console.log("Policy creation transaction:", data);
+      return data;
+    } catch (err) {
+      console.error("Error creating policy:", err);
+      throw err;
+    }
   };
 
   return {
