@@ -1,0 +1,7 @@
+POST http://localhost:3000/api/deployAgent
+Content-Type: application/json
+
+{
+  "userAddress": "0x6af90FF366aE23f4Bb719a56eBc910aF4C169aCE",
+  "subscriptionRate": 0.001
+}

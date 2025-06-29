@@ -15,6 +15,7 @@ async function postHandler(req: Request, res: NextResponse) {
     try {
         const body = await req.json();
         const { userAddress, subscriptionRate } = body;
+        console.log("Subscription Rate:", subscriptionRate);
 
         // Validate input parameters
         if (!userAddress || !ethers.isAddress(userAddress)) {
@@ -26,6 +27,7 @@ async function postHandler(req: Request, res: NextResponse) {
             );
         }
 
+        // Enhanced validation for subscription rate to handle decimals
         if (
             !subscriptionRate ||
             isNaN(Number(subscriptionRate)) ||
@@ -33,7 +35,7 @@ async function postHandler(req: Request, res: NextResponse) {
         ) {
             return NextResponse.json(
                 {
-                    error: "Invalid subscription rate provided",
+                    error: "Invalid subscription rate provided. Must be a positive number (can include decimals)",
                 },
                 { status: 400 }
             );
@@ -61,11 +63,25 @@ async function postHandler(req: Request, res: NextResponse) {
             throw new Error("Deployer wallet has no balance");
         }
 
-        // Convert subscription rate to Wei
-        const subscriptionRateWei = ethers.parseUnits(
-            subscriptionRate.toString(),
-            "wei"
-        );
+        // Convert subscription rate to Wei - handles both integers and decimals
+        let subscriptionRateWei: bigint;
+        try {
+            // Use parseEther to properly handle decimal ETH values
+            subscriptionRateWei = ethers.parseEther(
+                subscriptionRate.toString()
+            );
+            console.log(
+                `Converted ${subscriptionRate} ETH to ${subscriptionRateWei.toString()} Wei`
+            );
+        } catch (parseError) {
+            console.error("Error parsing subscription rate:", parseError);
+            return NextResponse.json(
+                {
+                    error: "Invalid subscription rate format. Please provide a valid ETH amount (e.g., 0.1, 1.5, 2)",
+                },
+                { status: 400 }
+            );
+        }
 
         // Validate constructor parameters
         if (
@@ -156,6 +172,8 @@ async function postHandler(req: Request, res: NextResponse) {
                             agentAddress: receiptAddress,
                             transactionHash: tx.hash,
                             blockNumber: regReceipt.blockNumber,
+                            subscriptionRateETH: subscriptionRate.toString(),
+                            subscriptionRateWei: subscriptionRateWei.toString(),
                         },
                         { status: 200 }
                     );
@@ -218,6 +236,8 @@ async function postHandler(req: Request, res: NextResponse) {
                 agentAddress: agentContractAddress,
                 transactionHash: tx.hash,
                 blockNumber: receipt.blockNumber,
+                subscriptionRateETH: subscriptionRate.toString(),
+                subscriptionRateWei: subscriptionRateWei.toString(),
             },
             { status: 200 }
         );
