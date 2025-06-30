@@ -88,7 +88,7 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
     /**
      * @dev Fund the agent contract
      */
-    function fund() external payable onlyUser {
+    function fund() external payable {
         require(msg.value > 0, "Funding amount must be greater than 0");
 
         totalFunded += msg.value;
@@ -264,6 +264,23 @@ contract AIAgentContract is ReentrancyGuard, Ownable, Pausable {
         uint256 paymentInterval
     ) external view returns (bool) {
         return block.timestamp >= lastPaymentTime + paymentInterval;
+    }
+
+    /**
+     * @dev Withdraw specific amount for premium payment (called by PremiumForwarder)
+     * @param amount Amount to withdraw for premium payment
+     */
+    function withdrawForPremium(
+        uint256 amount
+    ) external onlyMainContract nonReentrant whenNotPaused {
+        require(amount > 0, "Amount must be greater than 0");
+        require(address(this).balance >= amount, "Insufficient balance");
+
+        totalWithdrawn += amount;
+
+        // Send the amount to the calling contract (PremiumForwarder)
+        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        require(success, "Premium withdrawal failed");
     }
 
     /**
