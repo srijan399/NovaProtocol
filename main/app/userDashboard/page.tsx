@@ -32,7 +32,12 @@ import Link from "next/link";
 import usePremiumForwarder, {
     useAutopayStatus,
 } from "@/utils/PremiumForwarder";
-import { rugPullAbi, rugPullAddress, yieldPoolAddress, yieldPoolAbi } from '../abi';
+import {
+    rugPullAbi,
+    rugPullAddress,
+    yieldPoolAddress,
+    yieldPoolAbi,
+} from "../abi";
 import { parseEther } from "viem";
 
 interface PolicyDataType {
@@ -53,9 +58,9 @@ export default function Dashboard() {
     const [userPolicies, setUserPolicies] = useState<PolicyDataType[]>([]);
     const riskLevelNames = ["Low", "Medium", "High"];
     const policyType = [
-        "DeFi Protocol",
         "Rug Pull",
-        "Smart Contract",
+        "Bridge Security",
+        "DeFi Protocol",
         "Wallet Hack",
     ];
     const [open, setOpen] = useState(false);
@@ -63,13 +68,15 @@ export default function Dashboard() {
         null
     );
     const [autopayEnabled, setAutopayEnabled] = useState(false);
-    
+
     // Claim-related state variables
-    const [claimStatus, setClaimStatus] = useState<{[key: number]: {
-        isSubmitted: boolean;
-        timeRemaining: number;
-        isTimerComplete: boolean;
-    }}>({});
+    const [claimStatus, setClaimStatus] = useState<{
+        [key: number]: {
+            isSubmitted: boolean;
+            timeRemaining: number;
+            isTimerComplete: boolean;
+        };
+    }>({});
 
     const { enableAutopay, disableAutopay, manualPremiumPayment } =
         usePremiumForwarder();
@@ -82,7 +89,7 @@ export default function Dashboard() {
     const { data: claimData, isLoading: isClaimLoading } = useReadContract({
         address: rugPullAddress,
         abi: rugPullAbi,
-        functionName: 'isRugPull',
+        functionName: "isRugPull",
         args: [],
     });
 
@@ -157,20 +164,25 @@ export default function Dashboard() {
 
             if (status?.isSubmitted && status.timeRemaining > 0) {
                 intervals[policyId] = setInterval(() => {
-                    setClaimStatus(prev => ({
+                    setClaimStatus((prev) => ({
                         ...prev,
                         [policyId]: {
                             ...prev[policyId],
-                            timeRemaining: prev[policyId].timeRemaining <= 1 ? 0 : prev[policyId].timeRemaining - 1,
-                            isTimerComplete: prev[policyId].timeRemaining <= 1
-                        }
+                            timeRemaining:
+                                prev[policyId].timeRemaining <= 1
+                                    ? 0
+                                    : prev[policyId].timeRemaining - 1,
+                            isTimerComplete: prev[policyId].timeRemaining <= 1,
+                        },
                     }));
                 }, 1000);
             }
         });
 
         return () => {
-            Object.values(intervals).forEach(interval => clearInterval(interval));
+            Object.values(intervals).forEach((interval) =>
+                clearInterval(interval)
+            );
         };
     }, [claimStatus]);
 
@@ -288,28 +300,29 @@ export default function Dashboard() {
             await writeContractAsync({
                 address: rugPullAddress,
                 abi: rugPullAbi,
-                functionName: 'sendRugPullCheckRequest',
+                functionName: "sendRugPullCheckRequest",
                 args: [15703],
             });
 
-            console.log('Claim submitted successfully for policy:', policyId);
-            
+            console.log("Claim submitted successfully for policy:", policyId);
+
             // Set claim status with timer
-            setClaimStatus(prev => ({
+            setClaimStatus((prev) => ({
                 ...prev,
                 [policyId]: {
                     isSubmitted: true,
                     timeRemaining: 300, // 5 minutes
-                    isTimerComplete: false
-                }
+                    isTimerComplete: false,
+                },
             }));
 
             toast("Claim Submitted", {
-                description: "Your claim has been submitted and is under review.",
+                description:
+                    "Your claim has been submitted and is under review.",
                 className: "bg-gray-900 border-blue-500/30 text-white",
             });
         } catch (error: any) {
-            console.error('Error submitting claim:', error);
+            console.error("Error submitting claim:", error);
             toast.error("Failed to submit claim", {
                 description: error.message,
                 className: "bg-red-900 border-red-500/30 text-white",
@@ -319,9 +332,9 @@ export default function Dashboard() {
 
     const handleCheckResult = async (policyId: number) => {
         // Call the smart contract function to check the claim result
-        console.log('Checking claim result for policy:', policyId);
-        console.log('Claim Data:', claimData);
-        console.log('Current Policy:', currentPolicy);
+        console.log("Checking claim result for policy:", policyId);
+        console.log("Claim Data:", claimData);
+        console.log("Current Policy:", currentPolicy);
 
         // Ensure coverageAmount is converted to string and parsed to BigInt (wei, uint256)
         const coverageAmountWei =
@@ -329,12 +342,12 @@ export default function Dashboard() {
                 ? BigInt(parseEther(currentPolicy.coverageAmount.toString()))
                 : BigInt(0);
 
-        console.log('Coverage Amount (wei):', coverageAmountWei);
+        console.log("Coverage Amount (wei):", coverageAmountWei);
 
         await writeContractAsync({
             address: yieldPoolAddress,
             abi: yieldPoolAbi,
-            functionName: 'processClaim',
+            functionName: "processClaim",
             args: [
                 coverageAmountWei,
                 currentPolicy?.riskLevel || 0,
@@ -351,17 +364,17 @@ export default function Dashboard() {
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
     };
 
     const resetClaim = (policyId: number) => {
-        setClaimStatus(prev => ({
+        setClaimStatus((prev) => ({
             ...prev,
             [policyId]: {
                 isSubmitted: false,
                 timeRemaining: 0,
-                isTimerComplete: false
-            }
+                isTimerComplete: false,
+            },
         }));
     };
 
@@ -840,7 +853,10 @@ export default function Dashboard() {
                                                                         </Button>
 
                                                                         {/* Claim Section with Timer */}
-                                                                        {!claimStatus[currentPolicy?.id as number]?.isSubmitted ? (
+                                                                        {!claimStatus[
+                                                                            currentPolicy?.id as number
+                                                                        ]
+                                                                            ?.isSubmitted ? (
                                                                             <Button
                                                                                 onClick={() =>
                                                                                     handleSubmitClaim(
@@ -868,24 +884,60 @@ export default function Dashboard() {
                                                                             </Button>
                                                                         ) : (
                                                                             <div className="space-y-4">
-                                                                                {!claimStatus[currentPolicy?.id as number]?.isTimerComplete ? (
+                                                                                {!claimStatus[
+                                                                                    currentPolicy?.id as number
+                                                                                ]
+                                                                                    ?.isTimerComplete ? (
                                                                                     <div className="bg-gray-800/60 backdrop-blur-lg border border-gray-700/50 rounded-lg p-4">
                                                                                         <div className="text-center">
                                                                                             <div className="mb-4">
                                                                                                 <div className="inline-flex items-center justify-center w-12 h-12 bg-yellow-500/20 rounded-full mb-3">
-                                                                                                    <svg className="w-6 h-6 text-yellow-400 animate-spin" fill="none" viewBox="0 0 24 24">
-                                                                                                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"></circle>
-                                                                                                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" className="opacity-75"></path>
+                                                                                                    <svg
+                                                                                                        className="w-6 h-6 text-yellow-400 animate-spin"
+                                                                                                        fill="none"
+                                                                                                        viewBox="0 0 24 24"
+                                                                                                    >
+                                                                                                        <circle
+                                                                                                            cx="12"
+                                                                                                            cy="12"
+                                                                                                            r="10"
+                                                                                                            stroke="currentColor"
+                                                                                                            strokeWidth="4"
+                                                                                                            className="opacity-25"
+                                                                                                        ></circle>
+                                                                                                        <path
+                                                                                                            fill="currentColor"
+                                                                                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                                                                            className="opacity-75"
+                                                                                                        ></path>
                                                                                                     </svg>
                                                                                                 </div>
-                                                                                                <h3 className="text-lg font-semibold text-white mb-2">Processing Claim</h3>
-                                                                                                <p className="text-gray-300 text-sm mb-3">Your claim is being reviewed...</p>
+                                                                                                <h3 className="text-lg font-semibold text-white mb-2">
+                                                                                                    Processing
+                                                                                                    Claim
+                                                                                                </h3>
+                                                                                                <p className="text-gray-300 text-sm mb-3">
+                                                                                                    Your
+                                                                                                    claim
+                                                                                                    is
+                                                                                                    being
+                                                                                                    reviewed...
+                                                                                                </p>
                                                                                             </div>
 
                                                                                             <div className="bg-yellow-500/10 rounded-lg p-3 border border-yellow-500/20">
-                                                                                                <p className="text-yellow-400 text-sm mb-2">Time Remaining</p>
+                                                                                                <p className="text-yellow-400 text-sm mb-2">
+                                                                                                    Time
+                                                                                                    Remaining
+                                                                                                </p>
                                                                                                 <div className="text-2xl font-mono text-yellow-400 font-bold">
-                                                                                                    {formatTime(claimStatus[currentPolicy?.id as number]?.timeRemaining || 0)}
+                                                                                                    {formatTime(
+                                                                                                        claimStatus[
+                                                                                                            currentPolicy?.id as number
+                                                                                                        ]
+                                                                                                            ?.timeRemaining ||
+                                                                                                            0
+                                                                                                    )}
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -894,23 +946,55 @@ export default function Dashboard() {
                                                                                     <div className="bg-gray-800/60 backdrop-blur-lg border border-gray-700/50 rounded-lg p-4">
                                                                                         <div className="text-center">
                                                                                             <div className="inline-flex items-center justify-center w-12 h-12 bg-green-500/20 rounded-full mb-3">
-                                                                                                <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                                                                                <svg
+                                                                                                    className="w-6 h-6 text-green-400"
+                                                                                                    fill="none"
+                                                                                                    stroke="currentColor"
+                                                                                                    viewBox="0 0 24 24"
+                                                                                                >
+                                                                                                    <path
+                                                                                                        strokeLinecap="round"
+                                                                                                        strokeLinejoin="round"
+                                                                                                        strokeWidth="2"
+                                                                                                        d="M5 13l4 4L19 7"
+                                                                                                    ></path>
                                                                                                 </svg>
                                                                                             </div>
-                                                                                            <h3 className="text-lg font-semibold text-white mb-2">Review Complete</h3>
-                                                                                            <p className="text-gray-300 text-sm">Your claim has been processed and is ready for review.</p>
+                                                                                            <h3 className="text-lg font-semibold text-white mb-2">
+                                                                                                Review
+                                                                                                Complete
+                                                                                            </h3>
+                                                                                            <p className="text-gray-300 text-sm">
+                                                                                                Your
+                                                                                                claim
+                                                                                                has
+                                                                                                been
+                                                                                                processed
+                                                                                                and
+                                                                                                is
+                                                                                                ready
+                                                                                                for
+                                                                                                review.
+                                                                                            </p>
                                                                                         </div>
                                                                                     </div>
                                                                                 )}
 
                                                                                 <div className="flex flex-col space-y-2">
-                                                                                    {claimStatus[currentPolicy?.id as number]?.isTimerComplete ? (
+                                                                                    {claimStatus[
+                                                                                        currentPolicy?.id as number
+                                                                                    ]
+                                                                                        ?.isTimerComplete ? (
                                                                                         <Button
-                                                                                            onClick={() => handleCheckResult(currentPolicy?.id as number)}
+                                                                                            onClick={() =>
+                                                                                                handleCheckResult(
+                                                                                                    currentPolicy?.id as number
+                                                                                                )
+                                                                                            }
                                                                                             className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                                                                                         >
-                                                                                            Check Result
+                                                                                            Check
+                                                                                            Result
                                                                                         </Button>
                                                                                     ) : (
                                                                                         <Button
@@ -922,7 +1006,11 @@ export default function Dashboard() {
                                                                                     )}
 
                                                                                     <Button
-                                                                                        onClick={() => resetClaim(currentPolicy?.id as number)}
+                                                                                        onClick={() =>
+                                                                                            resetClaim(
+                                                                                                currentPolicy?.id as number
+                                                                                            )
+                                                                                        }
                                                                                         className="bg-gray-600/50 hover:bg-gray-600/70 text-gray-300 hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 border border-gray-500/30"
                                                                                     >
                                                                                         Reset
