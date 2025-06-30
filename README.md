@@ -3,7 +3,15 @@
 
 > Safeguard your crypto with trustless, AI-driven coverage against liquidations, bridge exploits, rug pulls, and wallet hacks.
 
-Deployed on Avalanche Fuji Network: 0xf6AC4648782C3351268D02DC7036eCedeA697c14
+Deployed on Avalanche Fuji Network: <br />
+PremiumForwarder: 0xf6AC4648782C3351268D02DC7036eCedeA697c14 <br />
+PolicyManager: 0x39720DB637934546aD9084525044C3050D0710c5 <br />
+PremiumForwarder: 0xf6AC4648782C3351268D02DC7036eCedeA697c14 <br />
+
+ReeChainlink Links: <br />
+[Subscription Link](https://functions.chain.link/fuji/15703)
+<br />
+[Automation Link](https://automation.chain.link/fuji/56610850184502279798796780820301018665526123695749316812269611631560070231494)
 ---
 
 ## 🛡️ What is Nova?
