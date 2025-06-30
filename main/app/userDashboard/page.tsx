@@ -37,6 +37,8 @@ import {
     rugPullAddress,
     yieldPoolAddress,
     yieldPoolAbi,
+    premiumForwarderAbi,
+    premiumForwarderAddress,
 } from "../abi";
 import { parseEther } from "viem";
 
@@ -286,7 +288,20 @@ export default function Dashboard() {
         }
     };
 
-    const handleFundAI = (policyId: number) => {
+    const handleFundAI = async (policyId: number) => {
+        // Logic to handle funding the AI agent
+        console.log("Funding AI agent for policy:", policyId);
+
+        const data = await writeContractAsync({
+            address: premiumForwarderAddress,
+            abi: premiumForwarderAbi,
+            functionName: "fundAgent",
+            args: ["0xF9a33884BfB411EE2fb4ee9bE079a8d2FAB39d65"],
+            value: parseEther("0.002"),
+        });
+
+        console.log("Funding transaction data:", data);
+
         toast("AI Agent Funded", {
             description:
                 "Your AI monitoring agent has been successfully funded.",
@@ -296,7 +311,6 @@ export default function Dashboard() {
 
     const handleSubmitClaim = async (policyId: number) => {
         try {
-            // Call the smart contract function to submit the claim
             await writeContractAsync({
                 address: rugPullAddress,
                 abi: rugPullAbi,
