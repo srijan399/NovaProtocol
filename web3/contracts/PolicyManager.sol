@@ -26,9 +26,9 @@ enum RiskLevel {
 }
 
 enum PolicyType {
-    DEFI_PROTOCOL,
+    RUG_PULL,
     BRIDGE_SECURITY,
-    SMART_CONTRACT,
+    DEFI_PROTOCOL,
     WALLET_HACK
 }
 
@@ -422,9 +422,9 @@ contract PolicyManager {
     function _getPolicyTypeName(
         PolicyType policyType
     ) internal pure returns (string memory) {
+        if (policyType == PolicyType.RUG_PULL) return "RUG_PULL";
         if (policyType == PolicyType.DEFI_PROTOCOL) return "DEFI_PROTOCOL";
         if (policyType == PolicyType.BRIDGE_SECURITY) return "BRIDGE_SECURITY";
-        if (policyType == PolicyType.SMART_CONTRACT) return "SMART_CONTRACT";
         if (policyType == PolicyType.WALLET_HACK) return "WALLET_HACK";
         return "UNKNOWN";
     }

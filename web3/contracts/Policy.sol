@@ -13,34 +13,6 @@ pragma solidity ^0.8.28;
 //     ) external returns (bool);
 // }
 
-// interface IYieldPool {
-//     function depositPremium(uint256 amount, uint8 riskLevel) external;
-
-//     function processClaim(
-//         uint256 amount,
-//         uint8 riskLevel,
-//         address recipient
-//     ) external;
-
-//     function getPoolBalance(uint8 riskLevel) external view returns (uint256);
-// }
-
-// interface IPolicyManager {
-//     function getPolicyDetails(
-//         uint256 policyId
-//     )
-//         external
-//         view
-//         returns (
-//             address owner,
-//             uint256 coverageAmount,
-//             uint256 premiumAmount,
-//             uint8 riskLevel,
-//             uint256 expiryDate,
-//             bool isActive
-//         );
-// }
-
 // // ==================== ENUMS AND STRUCTS ====================
 
 // enum RiskLevel {
@@ -48,21 +20,6 @@ pragma solidity ^0.8.28;
 //     MEDIUM,
 //     HIGH
 // }
-
-// enum PolicyType {
-//     DEFI_PROTOCOL,
-//     BRIDGE_SECURITY,
-//     SMART_CONTRACT,
-//     WALLET_HACK
-// }
-
-// enum ClaimStatus {
-//     PENDING,
-//     APPROVED,
-//     REJECTED,
-//     PAID
-// }
-
 // struct Policy {
 //     uint256 id;
 //     address owner;

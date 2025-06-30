@@ -12,8 +12,8 @@ async function main() {
         deployer
     );
     const pManager = await PremiumForwarder.deploy(
-        "0x80Ba88E6EC0b4C228E16DcD2805FF611d2454e6E",
-        "0x411b798C0bBE8eFC92B2F6569B7ffb6AE7f50462"
+        "0x0e6376582D0edad3d08482Fe46ce1c5f0E2f7023",
+        "0xF4D06cDDAD6a5bB12246769Cd64eA04586d885b6"
     );
 
     console.log("Deploying PremiumManager...");

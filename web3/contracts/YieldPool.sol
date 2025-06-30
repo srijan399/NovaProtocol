@@ -134,7 +134,7 @@ contract YieldPool is AutomationCompatibleInterface {
         uint256 amount,
         uint8 riskLevel,
         address recipient
-    ) external onlyAuthorized {
+    ) external {
         require(riskLevel < 3, "Invalid risk level");
         require(
             pools[riskLevel].totalDeposits >= amount,
