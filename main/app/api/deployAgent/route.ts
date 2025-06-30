@@ -11,7 +11,7 @@ import "dotenv/config";
 const PRIVATE_KEY = process.env.PRIVATE_KEY!;
 const RPC_URL = process.env.RPC_URL!;
 
-async function postHandler(req: Request, res: NextResponse) {
+async function postHandler(req: Request) {
     try {
         const body = await req.json();
         const { userAddress, subscriptionRate } = body;
