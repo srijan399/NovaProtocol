@@ -381,17 +381,6 @@ export default function Dashboard() {
         return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
     };
 
-    const resetClaim = (policyId: number) => {
-        setClaimStatus((prev) => ({
-            ...prev,
-            [policyId]: {
-                isSubmitted: false,
-                timeRemaining: 0,
-                isTimerComplete: false,
-            },
-        }));
-    };
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden">
             {/* Top Boundary Gradient */}
@@ -935,7 +924,7 @@ export default function Dashboard() {
                                                                                                     claim
                                                                                                     is
                                                                                                     being
-                                                                                                    reviewed...
+                                                                                                    reviewed. Do not close or refresh this page.
                                                                                                 </p>
                                                                                             </div>
 
@@ -1018,17 +1007,6 @@ export default function Dashboard() {
                                                                                             Processing...
                                                                                         </Button>
                                                                                     )}
-
-                                                                                    <Button
-                                                                                        onClick={() =>
-                                                                                            resetClaim(
-                                                                                                currentPolicy?.id as number
-                                                                                            )
-                                                                                        }
-                                                                                        className="bg-gray-600/50 hover:bg-gray-600/70 text-gray-300 hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 border border-gray-500/30"
-                                                                                    >
-                                                                                        Reset
-                                                                                    </Button>
                                                                                 </div>
                                                                             </div>
                                                                         )}
