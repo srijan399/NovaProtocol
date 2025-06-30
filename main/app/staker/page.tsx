@@ -339,7 +339,7 @@ function StakeModal({ pool, isOpen, onClose }: StakeModalProps) {
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-400">
-                                        You'll Receive
+                                        You will Receive
                                     </span>
                                     <span className="text-green-400 font-medium">
                                         $
