@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import { NextResponse } from "next/server";
 import {
-    mainContractAbi,
-    mainContractAddress,
+    premiumForwarderAbi,
+    premiumForwarderAddress,
     agentContractAbi,
     agentContractBytecode,
 } from "@/app/abi";
@@ -86,7 +86,7 @@ async function postHandler(req: Request) {
         // Validate constructor parameters
         if (
             !ethers.isAddress(userAddress) ||
-            !ethers.isAddress(mainContractAddress) ||
+            !ethers.isAddress(premiumForwarderAddress) ||
             subscriptionRateWei <= 0
         ) {
             throw new Error("Invalid constructor parameters");
@@ -99,7 +99,9 @@ async function postHandler(req: Request) {
         );
 
         // Verify main contract exists
-        const mainContractCode = await provider.getCode(mainContractAddress);
+        const mainContractCode = await provider.getCode(
+            premiumForwarderAddress
+        );
         if (mainContractCode === "0x") {
             throw new Error("Main contract not found at the specified address");
         }
@@ -109,7 +111,7 @@ async function postHandler(req: Request) {
         try {
             const deployTx = await factory.getDeployTransaction(
                 userAddress,
-                mainContractAddress,
+                premiumForwarderAddress,
                 subscriptionRateWei
             );
             estimatedGas = await provider.estimateGas(deployTx);
@@ -119,7 +121,7 @@ async function postHandler(req: Request) {
 
         const contract = await factory.deploy(
             userAddress,
-            mainContractAddress,
+            premiumForwarderAddress,
             subscriptionRateWei,
             {
                 gasLimit: estimatedGas + BigInt(100000),
@@ -158,8 +160,8 @@ async function postHandler(req: Request) {
 
                     // Register with main contract
                     const mainContract = new ethers.Contract(
-                        mainContractAddress,
-                        mainContractAbi,
+                        premiumForwarderAddress,
+                        premiumForwarderAbi,
                         wallet
                     );
                     const tx = await mainContract.registerAgent(receiptAddress);
@@ -223,8 +225,8 @@ async function postHandler(req: Request) {
 
         // Register agent in main contract
         const mainContract = new ethers.Contract(
-            mainContractAddress,
-            mainContractAbi,
+            premiumForwarderAddress,
+            premiumForwarderAbi,
             wallet
         );
         const tx = await mainContract.registerAgent(agentContractAddress);

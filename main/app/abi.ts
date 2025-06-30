@@ -1,461 +1,3 @@
-export const mainContractAbi = [
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "_policyManager",
-                type: "address",
-            },
-            {
-                internalType: "address",
-                name: "_yieldPool",
-                type: "address",
-            },
-        ],
-        stateMutability: "nonpayable",
-        type: "constructor",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-            {
-                indexed: true,
-                internalType: "address",
-                name: "user",
-                type: "address",
-            },
-        ],
-        name: "AgentRegistered",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-            {
-                indexed: true,
-                internalType: "address",
-                name: "user",
-                type: "address",
-            },
-        ],
-        name: "AgentRemoved",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "AutoPayDisabled",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "AutoPayEnabled",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "agentsProcessed",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "totalCollected",
-                type: "uint256",
-            },
-        ],
-        name: "AutomationExecuted",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "address",
-                name: "owner",
-                type: "address",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-            },
-        ],
-        name: "FundsWithdrawn",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "oldInterval",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "newInterval",
-                type: "uint256",
-            },
-        ],
-        name: "PaymentIntervalUpdated",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint8",
-                name: "riskLevel",
-                type: "uint8",
-            },
-        ],
-        name: "PremiumPaid",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "timestamp",
-                type: "uint256",
-            },
-        ],
-        name: "SubscriptionCollected",
-        type: "event",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        name: "agentContracts",
-        outputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address",
-            },
-        ],
-        name: "agentIndex",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "automationEnabled",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        name: "autopayEnabled",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes",
-                name: "",
-                type: "bytes",
-            },
-        ],
-        name: "checkUpkeep",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "upkeepNeeded",
-                type: "bool",
-            },
-            {
-                internalType: "bytes",
-                name: "performData",
-                type: "bytes",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "disableAutoPay",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "enableAutoPay",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address",
-            },
-        ],
-        name: "isRegisteredAgent",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "lastAutomationRun",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        name: "lastPremiumPayment",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "manualPremiumPayment",
-        outputs: [],
-        stateMutability: "payable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "bytes",
-                name: "performData",
-                type: "bytes",
-            },
-        ],
-        name: "performUpkeep",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "policyManager",
-        outputs: [
-            {
-                internalType: "contract IPolicyManager",
-                name: "",
-                type: "address",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-        ],
-        name: "registerAgent",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-        ],
-        name: "removeAgent",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "totalCollected",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "yieldPool",
-        outputs: [
-            {
-                internalType: "contract IYieldPool",
-                name: "",
-                type: "address",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        stateMutability: "payable",
-        type: "receive",
-    },
-];
-
-export const mainContractAddress = "0x335364dB74E9380e0D0d27Bdd7d4Cd3F99e56E09";
-
 export const agentContractAbi = [
     {
         inputs: [
@@ -1441,7 +983,7 @@ export const policyManagerAbi = [
 ];
 
 export const policyManagerAddress =
-    "0x80Ba88E6EC0b4C228E16DcD2805FF611d2454e6E";
+    "0x0e6376582D0edad3d08482Fe46ce1c5f0E2f7023";
 
 export const premiumForwarderAbi = [
     {
@@ -1459,6 +1001,75 @@ export const premiumForwarderAbi = [
         ],
         stateMutability: "nonpayable",
         type: "constructor",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "funder",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "timestamp",
+                type: "uint256",
+            },
+        ],
+        name: "AgentFunded",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "user",
+                type: "address",
+            },
+        ],
+        name: "AgentRegistered",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "user",
+                type: "address",
+            },
+        ],
+        name: "AgentRemoved",
+        type: "event",
     },
     {
         anonymous: false,
@@ -1490,6 +1101,57 @@ export const premiumForwarderAbi = [
         anonymous: false,
         inputs: [
             {
+                indexed: false,
+                internalType: "uint256",
+                name: "premiumsPaid",
+                type: "uint256",
+            },
+        ],
+        name: "AutomationExecuted",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "PolicyLinkedToAgent",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "PolicyUnlinkedFromAgent",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
                 indexed: true,
                 internalType: "uint256",
                 name: "policyId",
@@ -1510,6 +1172,116 @@ export const premiumForwarderAbi = [
         ],
         name: "PremiumPaid",
         type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint8",
+                name: "riskLevel",
+                type: "uint8",
+            },
+        ],
+        name: "PremiumPaidFromAgent",
+        type: "event",
+    },
+    {
+        stateMutability: "payable",
+        type: "fallback",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        name: "agentContracts",
+        outputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+        ],
+        name: "agentIndex",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        name: "agentToPolicies",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "automationEnabled",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
     },
     {
         inputs: [
@@ -1583,6 +1355,109 @@ export const premiumForwarderAbi = [
     {
         inputs: [
             {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "getAgentPolicies",
+        outputs: [
+            {
+                internalType: "uint256[]",
+                name: "",
+                type: "uint256[]",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "getAllAgents",
+        outputs: [
+            {
+                internalType: "address[]",
+                name: "",
+                type: "address[]",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+        ],
+        name: "getPolicyAgent",
+        outputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "getStats",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "totalAgents",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "contractBalance",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "_totalPremiumsPaid",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "_totalCollectedFromAgents",
+                type: "uint256",
+            },
+            {
+                internalType: "bool",
+                name: "_automationEnabled",
+                type: "bool",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+        ],
+        name: "isRegisteredAgent",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
                 internalType: "uint256",
                 name: "",
                 type: "uint256",
@@ -1606,10 +1481,41 @@ export const premiumForwarderAbi = [
                 name: "policyId",
                 type: "uint256",
             },
+            {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "linkPolicyToAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
         ],
         name: "manualPremiumPayment",
         outputs: [],
         stateMutability: "payable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+        ],
+        name: "payPremiumFromAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {
@@ -1639,6 +1545,97 @@ export const premiumForwarderAbi = [
         type: "function",
     },
     {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        name: "policyToAgent",
+        outputs: [
+            {
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "registerAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "removeAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "toggleAutomation",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "totalCollectedFromAgents",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "totalPremiumsPaid",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "policyId",
+                type: "uint256",
+            },
+        ],
+        name: "unlinkPolicyFromAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
         inputs: [],
         name: "yieldPool",
         outputs: [
@@ -1658,7 +1655,7 @@ export const premiumForwarderAbi = [
 ];
 
 export const premiumForwarderAddress =
-    "0x335364dB74E9380e0D0d27Bdd7d4Cd3F99e56E09";
+    "0xF38C6980505a16499E5310C20ac987c598862D6d";
 
 export const yieldPoolAbi = [
     {
@@ -2086,4 +2083,4 @@ export const yieldPoolAbi = [
     },
 ];
 
-export const yieldPoolAddress = "0x411b798C0bBE8eFC92B2F6569B7ffb6AE7f50462";
+export const yieldPoolAddress = "0xF4D06cDDAD6a5bB12246769Cd64eA04586d885b6";
