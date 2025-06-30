@@ -9,7 +9,7 @@ import { sepolia, avalancheFuji } from "wagmi/chains";
 export const config = createConfig(
     getDefaultConfig({
         enableFamily: false,
-        chains: [sepolia, avalancheFuji],
+        chains: [ avalancheFuji, sepolia ],
         transports: {
             // RPC URL for each chain
             [avalancheFuji.id]: http(),
