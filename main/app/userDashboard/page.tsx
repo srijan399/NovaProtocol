@@ -52,7 +52,7 @@ export default function Dashboard() {
     const riskLevelNames = ["Low", "Medium", "High"];
     const policyType = [
         "DeFi Protocol",
-        "Bridge Security",
+        "Rug Pull",
         "Smart Contract",
         "Wallet Hack",
     ];
@@ -265,7 +265,8 @@ export default function Dashboard() {
                             Your Active Insurance Policies
                         </h1>
                         <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                            Manage and interact with your autonomous protection stack
+                            Manage and interact with your autonomous protection
+                            stack
                         </p>
                     </div>
 
@@ -292,7 +293,11 @@ export default function Dashboard() {
                                             <div className="flex-1">
                                                 <CardTitle className="text-white text-xl font-bold mb-2 group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                                                     {policy.id} -{" "}
-                                                    <Link href={policy.metadataUri}>
+                                                    <Link
+                                                        href={
+                                                            policy.metadataUri
+                                                        }
+                                                    >
                                                         URI
                                                     </Link>
                                                 </CardTitle>
@@ -315,7 +320,7 @@ export default function Dashboard() {
                                                     >
                                                         {
                                                             riskLevelNames[
-                                                            policy.riskLevel
+                                                                policy.riskLevel
                                                             ]
                                                         }{" "}
                                                         Risk
@@ -339,7 +344,11 @@ export default function Dashboard() {
                                                     </p>
                                                 </div>
                                                 <p className="text-white font-semibold">
-                                                    {policyType[policy.policyType]}
+                                                    {
+                                                        policyType[
+                                                            policy.policyType
+                                                        ]
+                                                    }
                                                 </p>
                                             </div>
                                             <div className="bg-gray-800/50 backdrop-blur-lg border border-gray-700/50 rounded-lg p-4 group-hover:bg-gray-700/60 transition-colors duration-300">
@@ -365,7 +374,8 @@ export default function Dashboard() {
                                                         </p>
                                                     </div>
                                                     <p className="text-white font-semibold text-lg">
-                                                        {policy.premiumAmount} ETH
+                                                        {policy.premiumAmount}{" "}
+                                                        ETH
                                                     </p>
                                                 </div>
                                                 <div className="text-right">
@@ -448,8 +458,8 @@ export default function Dashboard() {
                                                             >
                                                                 {
                                                                     riskLevelNames[
-                                                                    policy
-                                                                        .riskLevel
+                                                                        policy
+                                                                            .riskLevel
                                                                     ]
                                                                 }{" "}
                                                                 Risk
@@ -466,7 +476,8 @@ export default function Dashboard() {
                                                                         <Calendar className="w-4 h-4 text-blue-400" />
                                                                     </div>
                                                                     <span className="text-gray-300 text-sm font-medium">
-                                                                        Start Date
+                                                                        Start
+                                                                        Date
                                                                     </span>
                                                                 </div>
                                                                 <p className="text-white font-semibold">
@@ -535,7 +546,8 @@ export default function Dashboard() {
                                                         <div className="bg-gray-800/40 backdrop-blur-lg border border-gray-700/50 rounded-lg p-6">
                                                             <h3 className="text-lg font-semibold text-gray-200 mb-6 flex items-center gap-2">
                                                                 <TrendingUp className="w-5 h-5 text-cyan-400" />
-                                                                Policy Statistics
+                                                                Policy
+                                                                Statistics
                                                             </h3>
 
                                                             <div className="grid grid-cols-3 gap-8">
@@ -548,13 +560,14 @@ export default function Dashboard() {
                                                                         {Math.floor(
                                                                             (policy.expiryDate -
                                                                                 Date.now()) /
-                                                                            1000 /
-                                                                            3600 /
-                                                                            24
+                                                                                1000 /
+                                                                                3600 /
+                                                                                24
                                                                         )}
                                                                     </div>
                                                                     <div className="text-gray-500 text-xs">
-                                                                        Until expiry
+                                                                        Until
+                                                                        expiry
                                                                     </div>
                                                                 </div>
 
@@ -577,7 +590,8 @@ export default function Dashboard() {
                                                                         x
                                                                     </div>
                                                                     <div className="text-gray-500 text-xs">
-                                                                        Coverage to
+                                                                        Coverage
+                                                                        to
                                                                         premium
                                                                     </div>
                                                                 </div>
@@ -587,10 +601,11 @@ export default function Dashboard() {
                                                                         Status
                                                                     </div>
                                                                     <div
-                                                                        className={`font-bold text-2xl ${policy.isActive
-                                                                            ? "text-emerald-400"
-                                                                            : "text-red-400"
-                                                                            }`}
+                                                                        className={`font-bold text-2xl ${
+                                                                            policy.isActive
+                                                                                ? "text-emerald-400"
+                                                                                : "text-red-400"
+                                                                        }`}
                                                                     >
                                                                         {currentPolicy?.isActive
                                                                             ? "ACTIVE"
