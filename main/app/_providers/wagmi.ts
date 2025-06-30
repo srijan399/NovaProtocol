@@ -12,8 +12,8 @@ export const config = createConfig(
         chains: [sepolia, avalancheFuji],
         transports: {
             // RPC URL for each chain
-            [sepolia.id]: http(),
             [avalancheFuji.id]: http(),
+            [sepolia.id]: http(),
         },
         storage: createStorage({
             storage: cookieStorage,
@@ -23,10 +23,10 @@ export const config = createConfig(
         walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "default_project_id",
 
         // Required App Info
-        appName: "Aegis",
+        appName: "Nova Protocol",
 
         // Optional App Info
-        appDescription: "Decentralized on-chain insurance platform",
+        appDescription: "Autonomous Decentralized on-chain insurance platform",
         // appUrl: "https://family.co", // your app's url
         // appIcon: "https://family.co/logo.png",
     })
