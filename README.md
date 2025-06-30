@@ -1,55 +1,47 @@
-# 🛡️ Aegis
+# 🌌 Nova Protocol - Powered by Chainlink Automation & Functions
+**Autonomous, AI-Powered Insurance for Onchain Assets**
 
-**Aegis** is an AI-driven, trustless insurance protocol for DeFi users, powered by Chainlink services.
+> Safeguard your crypto with trustless, AI-driven coverage against liquidations, bridge exploits, rug pulls, and wallet hacks.
 
-> 🧠 Smart AI agents. 🔄 Automated premiums. 🔍 On-chain verified claims. 🌉 Cross-chain scalable.
+Deployed on Avalanche Fuji Network: 0xf6AC4648782C3351268D02DC7036eCedeA697c14
+---
+
+## 🛡️ What is Nova?
+
+Nova is a modular, onchain insurance protocol built to secure the decentralized economy.  
+It leverages **AI agents**, **Chainlink automation**, and **verifiable off-chain data** to offer:
+
+- 🧠 Customizable AI-crafted insurance policies  
+- 🔄 Autopay via onchain agents  
+- 🔗 Trustless claim validation with Chainlink Functions  
+- 💸 Risk-tiered yield pools for underwriters  
+- ⛓️ 100% smart contract-based execution
+
+Whether you're a DeFi user, LP, or protocol, Nova offers a secure fallback when things go wrong.
 
 ---
 
-## 💡 Problem
+## 🧰 Use Cases
 
-DeFi users face critical risks — wallet hacks, rugpulls, smart contract exploits — yet trustless insurance options are rare, non-intuitive, and not automated.
-
----
-
-## 🚀 Solution
-
-Aegis solves this by combining:
-
-- 🤖 **Eliza AI Agent**  
-  Conversationally guides users to select the right policy  
-  Classifies risk into categories like hacks, rugpulls, exploits
-
-- ⛓️ **Chainlink Automation**  
-  Handles weekly/monthly premium deductions  
-  Automates interest payments to LPs
-
-- 🔍 **AI + On-Chain Claim Verification**  
-  - Users file claims with contract/event/date  
-  - Our system validates using:
-    - Contract history
-    - Chainlink Data Feeds (price drops, anomalies)
-    - Chainlink Functions (optional logic)
-  - Valid claims trigger payouts from the pool
-
-- 📊 **LP Pools + Reputation Layer**  
-  - LPs earn yield by funding insurance pools  
-  - Honest users build on-chain rep → better returns if they become LPs
-
-- 🌉 **Cross-Chain Expansion**  
-  Powered by Chainlink CCIP (future extension)
+- ✅ Get covered against **liquidations** (e.g. Aave, Compound)
+- ✅ Protect LP positions from **impermanent loss**
+- ✅ Secure your wallet from **unauthorized access**
+- ✅ Stake into **Risk Pools** to earn yield from policy premiums
 
 ---
 
-## 🧱 Built With
+## 🧬 How It Works
 
-- Chainlink Automation
-- Chainlink Data Feeds
-- Chainlink Functions
-- Chainlink CCIP *(optional)*
-- Solidity, Hardhat, React, Wagmi, Tailwind
-- Eliza Agent or Custom LLM
+Nova is structured into two main layers:
+
+### ⚙️ Automation Layer
+- An **AI Agent** creates your policy with a custom risk profile.
+- Each agent has a wallet with **autopay** enabled.
+- **Chainlink Automation** ensures timely premium forwarding.
+- Premiums flow into yield-generating **Risk Pools**.
+
+### 🔐 Trust Layer
+- When users file claims, **Chainlink Functions** verify them using public APIs like **CoinGecko**, **DeBank**, etc.
+- If the claim is valid, **payouts are trustlessly issued onchain** from the appropriate pool.
 
 ---
-
-### 🔗 Join us in building the next generation of trustless insurance.
