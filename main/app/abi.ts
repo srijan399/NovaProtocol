@@ -983,7 +983,7 @@ export const policyManagerAbi = [
 ];
 
 export const policyManagerAddress =
-    "0x0e6376582D0edad3d08482Fe46ce1c5f0E2f7023";
+    "0x39720DB637934546aD9084525044C3050D0710c5";
 
 export const premiumForwarderAbi = [
     {
@@ -1001,6 +1001,25 @@ export const premiumForwarderAbi = [
         ],
         stateMutability: "nonpayable",
         type: "constructor",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "agentsProcessed",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "totalCollected",
+                type: "uint256",
+            },
+        ],
+        name: "AgentAutomationExecuted",
+        type: "event",
     },
     {
         anonymous: false,
@@ -1031,6 +1050,25 @@ export const premiumForwarderAbi = [
             },
         ],
         name: "AgentFunded",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "oldInterval",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "newInterval",
+                type: "uint256",
+            },
+        ],
+        name: "AgentPaymentIntervalUpdated",
         type: "event",
     },
     {
@@ -1076,6 +1114,31 @@ export const premiumForwarderAbi = [
         inputs: [
             {
                 indexed: true,
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "timestamp",
+                type: "uint256",
+            },
+        ],
+        name: "AgentSubscriptionCollected",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
                 internalType: "uint256",
                 name: "policyId",
                 type: "uint256",
@@ -1103,7 +1166,13 @@ export const premiumForwarderAbi = [
             {
                 indexed: false,
                 internalType: "uint256",
-                name: "premiumsPaid",
+                name: "policiesProcessed",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "agentsProcessed",
                 type: "uint256",
             },
         ],
@@ -1115,37 +1184,18 @@ export const premiumForwarderAbi = [
         inputs: [
             {
                 indexed: true,
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-            {
-                indexed: true,
                 internalType: "address",
-                name: "agentContract",
+                name: "owner",
                 type: "address",
             },
-        ],
-        name: "PolicyLinkedToAgent",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
             {
-                indexed: true,
+                indexed: false,
                 internalType: "uint256",
-                name: "policyId",
+                name: "amount",
                 type: "uint256",
             },
-            {
-                indexed: true,
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
         ],
-        name: "PolicyUnlinkedFromAgent",
+        name: "FundsWithdrawn",
         type: "event",
     },
     {
@@ -1174,39 +1224,17 @@ export const premiumForwarderAbi = [
         type: "event",
     },
     {
-        anonymous: false,
-        inputs: [
+        inputs: [],
+        name: "agentAutomationEnabled",
+        outputs: [
             {
-                indexed: true,
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-            {
-                indexed: true,
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-            },
-            {
-                indexed: false,
-                internalType: "uint8",
-                name: "riskLevel",
-                type: "uint8",
+                internalType: "bool",
+                name: "",
+                type: "bool",
             },
         ],
-        name: "PremiumPaidFromAgent",
-        type: "event",
-    },
-    {
-        stateMutability: "payable",
-        type: "fallback",
+        stateMutability: "view",
+        type: "function",
     },
     {
         inputs: [
@@ -1247,37 +1275,13 @@ export const premiumForwarderAbi = [
         type: "function",
     },
     {
-        inputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address",
-            },
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        name: "agentToPolicies",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
         inputs: [],
-        name: "automationEnabled",
+        name: "agentPaymentInterval",
         outputs: [
             {
-                internalType: "bool",
+                internalType: "uint256",
                 name: "",
-                type: "bool",
+                type: "uint256",
             },
         ],
         stateMutability: "view",
@@ -1329,6 +1333,19 @@ export const premiumForwarderAbi = [
     {
         inputs: [
             {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "collectFromAgent",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
                 internalType: "uint256",
                 name: "policyId",
                 type: "uint256",
@@ -1360,12 +1377,45 @@ export const premiumForwarderAbi = [
                 type: "address",
             },
         ],
-        name: "getAgentPolicies",
+        name: "fundAgent",
+        outputs: [],
+        stateMutability: "payable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+        ],
+        name: "getAgentInfo",
         outputs: [
             {
-                internalType: "uint256[]",
-                name: "",
-                type: "uint256[]",
+                internalType: "address",
+                name: "user",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "balance",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "subscriptionRate",
+                type: "uint256",
+            },
+            {
+                internalType: "bool",
+                name: "canPay",
+                type: "bool",
+            },
+            {
+                internalType: "bool",
+                name: "paymentDue",
+                type: "bool",
             },
         ],
         stateMutability: "view",
@@ -1379,25 +1429,6 @@ export const premiumForwarderAbi = [
                 internalType: "address[]",
                 name: "",
                 type: "address[]",
-            },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "getPolicyAgent",
-        outputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address",
             },
         ],
         stateMutability: "view",
@@ -1419,17 +1450,27 @@ export const premiumForwarderAbi = [
             },
             {
                 internalType: "uint256",
-                name: "_totalPremiumsPaid",
+                name: "_totalAgentCollected",
                 type: "uint256",
             },
             {
                 internalType: "uint256",
-                name: "_totalCollectedFromAgents",
+                name: "_agentPaymentInterval",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "_lastAgentAutomationRun",
                 type: "uint256",
             },
             {
                 internalType: "bool",
-                name: "_automationEnabled",
+                name: "_policyAutomationEnabled",
+                type: "bool",
+            },
+            {
+                internalType: "bool",
+                name: "_agentAutomationEnabled",
                 type: "bool",
             },
         ],
@@ -1450,6 +1491,19 @@ export const premiumForwarderAbi = [
                 internalType: "bool",
                 name: "",
                 type: "bool",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "lastAgentAutomationRun",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
             },
         ],
         stateMutability: "view",
@@ -1481,24 +1535,6 @@ export const premiumForwarderAbi = [
                 name: "policyId",
                 type: "uint256",
             },
-            {
-                internalType: "address",
-                name: "agentContract",
-                type: "address",
-            },
-        ],
-        name: "linkPolicyToAgent",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
         ],
         name: "manualPremiumPayment",
         outputs: [],
@@ -1506,14 +1542,8 @@ export const premiumForwarderAbi = [
         type: "function",
     },
     {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "policyId",
-                type: "uint256",
-            },
-        ],
-        name: "payPremiumFromAgent",
+        inputs: [],
+        name: "performAgentUpkeep",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -1533,29 +1563,23 @@ export const premiumForwarderAbi = [
     },
     {
         inputs: [],
-        name: "policyManager",
+        name: "policyAutomationEnabled",
         outputs: [
             {
-                internalType: "contract IPolicyManager",
+                internalType: "bool",
                 name: "",
-                type: "address",
+                type: "bool",
             },
         ],
         stateMutability: "view",
         type: "function",
     },
     {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        name: "policyToAgent",
+        inputs: [],
+        name: "policyManager",
         outputs: [
             {
-                internalType: "address",
+                internalType: "contract IPolicyManager",
                 name: "",
                 type: "address",
             },
@@ -1591,27 +1615,21 @@ export const premiumForwarderAbi = [
     },
     {
         inputs: [],
-        name: "toggleAutomation",
+        name: "toggleAgentAutomation",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
     },
     {
         inputs: [],
-        name: "totalCollectedFromAgents",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256",
-            },
-        ],
-        stateMutability: "view",
+        name: "togglePolicyAutomation",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {
         inputs: [],
-        name: "totalPremiumsPaid",
+        name: "totalAgentCollected",
         outputs: [
             {
                 internalType: "uint256",
@@ -1626,11 +1644,29 @@ export const premiumForwarderAbi = [
         inputs: [
             {
                 internalType: "uint256",
-                name: "policyId",
+                name: "newInterval",
                 type: "uint256",
             },
         ],
-        name: "unlinkPolicyFromAgent",
+        name: "updateAgentPaymentInterval",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "agentContract",
+                type: "address",
+            },
+            {
+                internalType: "uint256",
+                name: "newRate",
+                type: "uint256",
+            },
+        ],
+        name: "updateAgentSubscriptionRate",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -1655,7 +1691,7 @@ export const premiumForwarderAbi = [
 ];
 
 export const premiumForwarderAddress =
-    "0xF38C6980505a16499E5310C20ac987c598862D6d";
+    "0xf6AC4648782C3351268D02DC7036eCedeA697c14";
 
 export const yieldPoolAbi = [
     {
@@ -2083,262 +2119,262 @@ export const yieldPoolAbi = [
     },
 ];
 
-export const yieldPoolAddress = "0xF4D06cDDAD6a5bB12246769Cd64eA04586d885b6";
+export const yieldPoolAddress = "0x9c994b9dD1411c038d00C693714988ee6C843Fa1";
 
 export const rugPullAbi = [
     {
-        "inputs": [],
-        "name": "acceptOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        inputs: [],
+        name: "acceptOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
+        inputs: [],
+        stateMutability: "nonpayable",
+        type: "constructor",
     },
     {
-        "inputs": [],
-        "name": "EmptySource",
-        "type": "error"
+        inputs: [],
+        name: "EmptySource",
+        type: "error",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "bytes32",
-                "name": "requestId",
-                "type": "bytes32"
+                internalType: "bytes32",
+                name: "requestId",
+                type: "bytes32",
             },
             {
-                "internalType": "bytes",
-                "name": "response",
-                "type": "bytes"
+                internalType: "bytes",
+                name: "response",
+                type: "bytes",
             },
             {
-                "internalType": "bytes",
-                "name": "err",
-                "type": "bytes"
-            }
+                internalType: "bytes",
+                name: "err",
+                type: "bytes",
+            },
         ],
-        "name": "handleOracleFulfillment",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "handleOracleFulfillment",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "NoInlineSecrets",
-        "type": "error"
+        inputs: [],
+        name: "NoInlineSecrets",
+        type: "error",
     },
     {
-        "inputs": [],
-        "name": "OnlyRouterCanFulfill",
-        "type": "error"
+        inputs: [],
+        name: "OnlyRouterCanFulfill",
+        type: "error",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "bytes32",
-                "name": "requestId",
-                "type": "bytes32"
-            }
+                internalType: "bytes32",
+                name: "requestId",
+                type: "bytes32",
+            },
         ],
-        "name": "UnexpectedRequestID",
-        "type": "error"
+        name: "UnexpectedRequestID",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
+                indexed: true,
+                internalType: "address",
+                name: "from",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            }
+                indexed: true,
+                internalType: "address",
+                name: "to",
+                type: "address",
+            },
         ],
-        "name": "OwnershipTransferRequested",
-        "type": "event"
+        name: "OwnershipTransferRequested",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
+                indexed: true,
+                internalType: "address",
+                name: "from",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            }
+                indexed: true,
+                internalType: "address",
+                name: "to",
+                type: "address",
+            },
         ],
-        "name": "OwnershipTransferred",
-        "type": "event"
+        name: "OwnershipTransferred",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "bytes32",
-                "name": "id",
-                "type": "bytes32"
-            }
+                indexed: true,
+                internalType: "bytes32",
+                name: "id",
+                type: "bytes32",
+            },
         ],
-        "name": "RequestFulfilled",
-        "type": "event"
+        name: "RequestFulfilled",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "bytes32",
-                "name": "id",
-                "type": "bytes32"
-            }
+                indexed: true,
+                internalType: "bytes32",
+                name: "id",
+                type: "bytes32",
+            },
         ],
-        "name": "RequestSent",
-        "type": "event"
+        name: "RequestSent",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "bytes32",
-                "name": "requestId",
-                "type": "bytes32"
+                indexed: true,
+                internalType: "bytes32",
+                name: "requestId",
+                type: "bytes32",
             },
             {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "rugPull",
-                "type": "bool"
+                indexed: false,
+                internalType: "bool",
+                name: "rugPull",
+                type: "bool",
             },
             {
-                "indexed": false,
-                "internalType": "bytes",
-                "name": "response",
-                "type": "bytes"
+                indexed: false,
+                internalType: "bytes",
+                name: "response",
+                type: "bytes",
             },
             {
-                "indexed": false,
-                "internalType": "bytes",
-                "name": "err",
-                "type": "bytes"
-            }
+                indexed: false,
+                internalType: "bytes",
+                name: "err",
+                type: "bytes",
+            },
         ],
-        "name": "RugPullCheckResponse",
-        "type": "event"
+        name: "RugPullCheckResponse",
+        type: "event",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint64",
-                "name": "subscriptionId",
-                "type": "uint64"
-            }
+                internalType: "uint64",
+                name: "subscriptionId",
+                type: "uint64",
+            },
         ],
-        "name": "sendRugPullCheckRequest",
-        "outputs": [
+        name: "sendRugPullCheckRequest",
+        outputs: [
             {
-                "internalType": "bytes32",
-                "name": "requestId",
-                "type": "bytes32"
-            }
+                internalType: "bytes32",
+                name: "requestId",
+                type: "bytes32",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "to",
+                type: "address",
+            },
         ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "isRugPull",
-        "outputs": [
+        inputs: [],
+        name: "isRugPull",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+        inputs: [],
+        name: "owner",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "s_lastError",
-        "outputs": [
+        inputs: [],
+        name: "s_lastError",
+        outputs: [
             {
-                "internalType": "bytes",
-                "name": "",
-                "type": "bytes"
-            }
+                internalType: "bytes",
+                name: "",
+                type: "bytes",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "s_lastRequestId",
-        "outputs": [
+        inputs: [],
+        name: "s_lastRequestId",
+        outputs: [
             {
-                "internalType": "bytes32",
-                "name": "",
-                "type": "bytes32"
-            }
+                internalType: "bytes32",
+                name: "",
+                type: "bytes32",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "s_lastResponse",
-        "outputs": [
+        inputs: [],
+        name: "s_lastResponse",
+        outputs: [
             {
-                "internalType": "bytes",
-                "name": "",
-                "type": "bytes"
-            }
+                internalType: "bytes",
+                name: "",
+                type: "bytes",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
-    }
-]
+        stateMutability: "view",
+        type: "function",
+    },
+];
 
 export const rugPullAddress = "0xbcD0a7843e6510EBD445c83d273ae0745E72c7f6";

@@ -3,5 +3,5 @@ Content-Type: application/json
 
 {
   "userAddress": "0x6af90FF366aE23f4Bb719a56eBc910aF4C169aCE",
-  "subscriptionRate": 0.001
+  "subscriptionRate": 0.002
 }
